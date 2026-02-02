@@ -1,1 +1,181 @@
-# 4ever
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine?</title>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Comic Sans MS", "Arial Black", cursive;
+}
+
+body {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      #ffb6c1,
+      #ffb6c1 25px,
+      #000 25px,
+      #000 50px
+    );
+}
+
+.glitter {
+  position: fixed;
+  inset: 0;
+  background-image: url("https://i.imgur.com/8bKQZQp.png");
+  opacity: 0.45;
+  pointer-events: none;
+  animation: shimmer 6s infinite linear;
+}
+
+@keyframes shimmer {
+  0% { background-position: 0 0; }
+  100% { background-position: 400px 400px; }
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+h1 {
+  font-size: 4.5rem;
+  font-weight: 900;
+  color: hotpink;
+  text-shadow:
+    3px 3px white,
+    6px 6px deeppink;
+  margin-bottom: 60px;
+}
+
+.buttons {
+  position: relative;
+  width: 100%;
+  height: 250px;
+}
+
+.bubble {
+  position: absolute;
+  padding: 25px 50px;
+  font-size: 2.5rem;
+  border-radius: 999px;
+  border: 5px solid white;
+  cursor: pointer;
+  user-select: none;
+}
+
+#yes {
+  background: pink;
+  color: deeppink;
+  left: 35%;
+  top: 100px;
+  box-shadow: 0 0 20px hotpink;
+}
+
+#no {
+  background: white;
+  color: hotpink;
+  left: 55%;
+  top: 100px;
+  animation: shake 0.4s infinite;
+}
+
+@keyframes shake {
+  0% { transform: translate(0); }
+  25% { transform: translate(3px, -3px); }
+  50% { transform: translate(-3px, 3px); }
+  75% { transform: translate(3px, 3px); }
+  100% { transform: translate(0); }
+}
+
+.heart {
+  position: absolute;
+  font-size: 2rem;
+  animation: floatUp 3s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-200px) scale(1.8);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="glitter"></div>
+
+<div class="container">
+  <h1>ARI WILL YOU BE MY VALENTINE?</h1>
+
+  <div class="buttons">
+    <div id="yes" class="bubble">YES</div>
+    <div id="no" class="bubble">NO</div>
+  </div>
+</div>
+
+<audio id="sparkleSound" src="https://www.soundjay.com/misc/sounds/magic-chime-01.mp3"></audio>
+<audio id="panicSound" src="https://www.soundjay.com/human/sounds/scream-01.mp3"></audio>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const panicSound = document.getElementById("panicSound");
+const sparkleSound = document.getElementById("sparkleSound");
+
+document.addEventListener("mousemove", (e) => {
+  const rect = noBtn.getBoundingClientRect();
+  const dist = Math.hypot(
+    e.clientX - (rect.left + rect.width / 2),
+    e.clientY - (rect.top + rect.height / 2)
+  );
+
+  if (dist < 150) {
+    panicSound.currentTime = 0;
+    panicSound.play();
+
+    const maxX = window.innerWidth - rect.width;
+    const maxY = window.innerHeight - rect.height;
+
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
+  }
+});
+
+yesBtn.addEventListener("click", () => {
+  sparkleSound.play();
+
+  for (let i = 0; i < 30; i++) {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = yesBtn.offsetLeft + Math.random() * 100 + "px";
+    heart.style.top = yesBtn.offsetTop + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 3000);
+  }
+
+  setTimeout(() => {
+    alert("CONGRATS 💘 YOU ARE OFFICIALLY VALENTINES 💕");
+  }, 600);
+});
+</script>
+
+</body>
+</html>
